@@ -1,0 +1,29 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: docker-fast-ar-tls
+  namespace: default
+spec:
+  secretName: docker-fast-ar-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+  - docker.fast.ar
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: docker-registry-ingress-secure
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Host(`docker.fast.ar`)
+    kind: Rule
+    services:
+    - name: docker-registry-service
+      port: 5000
+  tls:
+    secretName: docker-fast-ar-tls

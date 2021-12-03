@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-server-service
+  namespace: kevin
+spec:
+  selector:
+    app: go-server
+  ports:
+    - port: 8000
+      targetPort: 8080
+  type: LoadBalancer

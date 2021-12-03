@@ -1,0 +1,47 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: api-fast-ar
+  namespace: kevin
+spec:
+  secretName: api-fast-ar-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+  - api.fast.ar
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: api-registry-ingress-secure
+  namespace: kevin
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Host(`api.fast.ar`)
+    kind: Rule
+    services:
+    - name: go-server-service
+      port: 8000
+  tls:
+    secretName: api-fast-ar-tls
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: api-registry-ingress
+  namespace: kevin
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: Host(`api.fast.ar`)
+    kind: Rule
+    services:
+    - name: go-server-service
+      port: 8000
+    middlewares:
+    - name: https-redirect
