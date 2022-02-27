@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: libre-job
+  namespace: kevin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: libre-job
+  template:
+    metadata:
+      labels:
+        app: libre-job
+    spec:
+      containers:
+        - name: app
+          image: docker.fast.ar/libre:latest
+      imagePullSecrets:
+        - name: regcred
