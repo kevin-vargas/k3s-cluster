@@ -1,0 +1,47 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: mqtt-fast-ar
+  namespace: kevin
+spec:
+  secretName: mqtt-fast-ar-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+  - mqtt.fast.ar
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: mqtt-registry-ingress-secure
+  namespace: kevin
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Host(`mqtt.fast.ar`)
+    kind: Rule
+    services:
+    - name: emqx-service
+      port: 18083
+  tls:
+    secretName: mqtt-fast-ar-tls
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: mqtt-registry-ingress
+  namespace: kevin
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: Host(`mqtt.fast.ar`)
+    kind: Rule
+    services:
+    - name: emqx-service
+      port: 18083
+    middlewares:
+    - name: https-redirect

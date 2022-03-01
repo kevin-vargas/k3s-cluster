@@ -1,24 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: go-server
+  name: emqx
   namespace: kevin
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: go-server
+      app: emqx
   template:
     metadata:
       labels:
-        app: go-server
+        app: emqx
     spec:
       containers:
         - name: app
-          image: docker.fast.ar/go-server
+          image: emqx/emqx
           ports:
-            - name: web
-              containerPort: 8080
+            - containerPort: 1883
               protocol: TCP
-      imagePullSecrets:
-        - name: regcred
+              name: tcp
+            - containerPort: 18083
+              protocol: TCP
+              name: http
