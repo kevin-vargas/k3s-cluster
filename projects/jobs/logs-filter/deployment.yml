@@ -1,22 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: libre-job
+  name: logs-filter
   namespace: kevin
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: libre-job
+      app: logs-filter
   template:
     metadata:
       labels:
-        app: libre-job
+        app: logs-filter
     spec:
       containers:
         - name: app
-          image: docker.fast.ar/libre
-        - name: sidecar
-          image: docker.fast.ar/sidecar-log
+          image: docker.fast.ar/logs-filter:latest
+          env:
+          - name: APP
+            value: logs-filter
       imagePullSecrets:
         - name: regcred

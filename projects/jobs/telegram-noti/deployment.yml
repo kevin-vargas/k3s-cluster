@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telegram-noti
+  namespace: kevin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telegram-noti
+  template:
+    metadata:
+      labels:
+        app: telegram-noti
+    spec:
+      containers:
+        - name: app
+          image: docker.fast.ar/telegram-noti:latest
+          env:
+          - name: APP
+            value: telegram-noti
+          - name: TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: telegram-secret
+                key: token
+      imagePullSecrets:
+        - name: regcred
