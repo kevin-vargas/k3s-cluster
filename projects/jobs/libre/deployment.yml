@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: docker.fast.ar/libre
+          image: docker.fast.ar/libre:latest
         - name: sidecar
           image: docker.fast.ar/sidecar-log
       imagePullSecrets:
