@@ -1,2 +1,5 @@
 secrets/
 **/secret.yml
+
+#Trash
+.DS_Store
