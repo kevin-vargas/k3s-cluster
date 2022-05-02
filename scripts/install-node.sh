@@ -100,7 +100,7 @@ install(){
 valid_or_reboot() {
     local PATH_CGROUPS="/proc/cgroups"
     local RESULT=$(cat "${PATH_CGROUPS}" | grep memory | tail -c 2 | head -c -1)
-    if [ -f "${PATH_CGROUPS}"] && [ "$RESULT" != "1" ]
+    if [ -f "${PATH_CGROUPS}" ] && [ "$RESULT" != "1" ]
     then
         echo "Rebooting"
         #sudo reboot
