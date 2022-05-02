@@ -1,6 +1,6 @@
 #! /bin/bash
-BOOT_CMDLINE_DIR="./cmdline.txt"
-BOOT_CONFIG_DIR="./config.txt"
+BOOT_CMDLINE_DIR="/boot/cmdline.txt"
+BOOT_CONFIG_DIR="/boot/config.txt"
 echo "Running master node install"
 NODE=$1
 
