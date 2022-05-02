@@ -25,7 +25,7 @@ ask_type_node(){
 }
 
 upgrade_system(){
-    sudo apt update && sudo apt upgrade
+    sudo apt update && sudo apt upgrade -y
     return 0
 }
 
