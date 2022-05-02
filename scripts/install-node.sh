@@ -56,7 +56,7 @@ appendln(){
 }
 
 add_memory_config(){
-    local TO_ADD=" cgroup_enable=memory cgroup_memory=1"
+    local TO_ADD=" cgroup_memory=1 cgroup_enable=memory"
     append "$TO_ADD" $BOOT_CMDLINE_DIR
 }
 
