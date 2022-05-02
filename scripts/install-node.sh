@@ -37,7 +37,8 @@ append(){
     then
         echo "File $APPEND_DIR has $TO_ADD"
     else
-        echo -n "$TO_ADD" >> $APPEND_DIR
+       cat $APPEND_DIR | tr -d '\n' | tee $APPEND_DIR
+       echo -n "$TO_ADD" >> $APPEND_DIR
     fi
     return 0
 }
@@ -84,7 +85,7 @@ install_worker(){
     then
         MASTER="${MASTER}:${DEFAULT_PORT}"
     fi
-    curl -sfL https://get.k3s.io | K3S_URL=${MASTER} K3S_TOKEN=${K3S_TOKEN} K3S_NODE_NAME=${NODE_NAME} sh -
+    curl -sfL https://get.k3s.io | K3S_URL=https://${MASTER} K3S_TOKEN=${K3S_TOKEN} K3S_NODE_NAME=${NODE_NAME} sh -
 }
 
 install(){
