@@ -97,9 +97,22 @@ install(){
     return 0
 }
 
+valid_or_reboot() {
+    local PATH_CGROUPS="/proc/cgroups"
+    local RESULT=$(cat "${PATH_CGROUPS}" | grep memory | tail -c 2 | head -c -1)
+    if [ -f "${PATH_CGROUPS}" && "$RESULT" != "1" ]
+    then
+        echo "Rebooting"
+        #sudo reboot
+        return 1
+    fi
+    return 0
+}
+
 {
-    upgrade_system &&
-    add_memory_config &&
-    add_config &&
+    #upgrade_system &&
+    #add_memory_config &&
+    #add_config &&
+    valid_or_reboot &&
     install
 }
