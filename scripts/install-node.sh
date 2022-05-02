@@ -2,6 +2,27 @@
 BOOT_CMDLINE_DIR="./cmdline.txt"
 BOOT_CONFIG_DIR="./config.txt"
 echo "Running master node install"
+NODE=$1
+
+is_master(){
+    local WORKER="WORKER"
+    if [ "$NODE" == "WORKER" ]
+    then
+        return 1
+    fi
+    return 0
+}
+
+ask_type_node(){
+    local YN
+    echo "Select type of node:"
+    select YN in "MASTER" "WORKER"; do
+        case $YN in
+            MASTER ) return 0;;
+            WORKER ) return 1;;
+        esac
+    done
+}
 
 upgrade_system(){
     sudo apt update && sudo apt upgrade
@@ -43,8 +64,7 @@ add_config(){
     local TO_ADD="arm_64bit=1"
     appendln $TO_ADD $BOOT_CONFIG_DIR
 }
-
-get_k3s(){
+install_master(){
     local TOKEN_DIR="/var/lib/rancher/k3s/server/node-token"
     local TOKEN="token"
     (curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644) && 
@@ -53,9 +73,33 @@ get_k3s(){
     cat $TOKEN_DIR > $TOKEN 
 }
 
+install_worker(){
+    local HAS_PORT=":[0-9]+"
+    local DEFAULT_PORT="6443"
+    local MASTER NODE_NAME K3S_TOKEN
+    read -p 'Master URL: ' MASTER
+    read -p 'Node Name: ' NODE_NAME
+    read -sp 'Token: ' K3S_TOKEN
+    if ! [[ $MASTER =~ $HAS_PORT ]]
+    then
+        MASTER="${MASTER}:${DEFAULT_PORT}"
+    fi
+    curl -sfL https://get.k3s.io | K3S_URL=${MASTER} K3S_TOKEN=${K3S_TOKEN} K3S_NODE_NAME=${NODE_NAME} sh -
+}
+
+install(){
+    if ask_type_node
+    then
+        install_master
+    else
+        install_worker
+    fi
+    return 0
+}
+
 {
-    upgrade_system &&
-    add_memory_config &&
-    add_config &&
-    get_k3s
+    #upgrade_system &&
+    #add_memory_config &&
+    #add_config &&
+    install
 }
