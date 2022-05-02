@@ -98,8 +98,8 @@ install(){
 }
 
 {
-    #upgrade_system &&
-    #add_memory_config &&
-    #add_config &&
+    upgrade_system &&
+    add_memory_config &&
+    add_config &&
     install
 }
