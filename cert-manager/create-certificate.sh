@@ -6,6 +6,11 @@ DNS_REGEX="%DNS_NAME%"
 NAME_REGEX="%NAME%"
 NAMESPACE_REGEX="%NAMESPACE%"
 
+ask_values(){
+    read -p 'Namespace: ' NAMESPACE_INPUT
+    read -p 'DNS: ' DNS_INPUT
+}
+
 create_template(){
     local DNS=$1
     local NAME=$(echo "${DNS}" | sed "s/[.]/-/g")
@@ -14,4 +19,7 @@ create_template(){
     echo "$RESULT" > "${DOMAINS}${NAME}-certificate.yaml"
 }
 
-create_template api.fast.ar kevin
+{
+    ask_values && 
+    create_template $DNS_INPUT $NAMESPACE_INPUT 
+}
