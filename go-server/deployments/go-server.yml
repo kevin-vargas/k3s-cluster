@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: docker.fast.ar/simple
+          image: docker.fast.ar/simple:latest
           ports:
             - name: web
               containerPort: 8000

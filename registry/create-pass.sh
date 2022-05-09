@@ -1,3 +1,5 @@
+#! /bin/bash
+
 SECRET_NAME=docker-registry-htpasswd
 FILE=htpasswd
 DIR=secrets
