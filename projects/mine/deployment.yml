@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft
+  namespace: minecraft
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft
+  template:
+    metadata:
+      labels:
+        app: minecraft
+    spec:
+      nodeSelector:
+        disktype: ssd
+        kubernetes.io/hostname: pi1
+      containers:
+        - name: app
+          image: docker.fast.ar/minecraft-server:latest
+          ports:
+            - name: tcp
+              containerPort: 25565
+              protocol: TCP
+            - name: udp
+              containerPort: 25565
+              protocol: UDP
+      imagePullSecrets:
+        - name: regcred
