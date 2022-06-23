@@ -15,10 +15,10 @@ spec:
     spec:
       containers:
         - name: app
-          image: docker.fast.ar/go-server
+          image: docker.fast.ar/simple:latest
           ports:
             - name: web
-              containerPort: 8080
+              containerPort: 8000
               protocol: TCP
       imagePullSecrets:
         - name: regcred
