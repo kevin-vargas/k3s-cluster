@@ -1,7 +1,7 @@
 #! /bin/bash
 BOOT_CMDLINE_DIR="/boot/cmdline.txt"
 BOOT_CONFIG_DIR="/boot/config.txt"
-echo "Running master node install"
+echo "Running k3s install script"
 NODE=$1
 
 is_master(){
@@ -36,8 +36,10 @@ append(){
     if [ $? -eq 0 ]
     then
         echo "File $APPEND_DIR has $TO_ADD"
+        return 1
     else
         echo -n "$TO_ADD" >> $APPEND_DIR
+        return 0
     fi
     return 0
 }
@@ -49,10 +51,11 @@ appendln(){
     if [ $? -eq 0 ]
     then
         echo "File $APPEND_DIR has $TO_ADD"
+        return 1
     else
         printf "\n$TO_ADD\n" >> $APPEND_DIR
+        return 0
     fi
-    return 0
 }
 
 add_memory_config(){
